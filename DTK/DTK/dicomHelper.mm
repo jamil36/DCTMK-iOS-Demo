@@ -8,7 +8,7 @@
 
 #import "dicomHelper.h"
 #include <zlib.h>/* for zlibVersion() */
-#include "osconfig.h"
+#include "dcmtk/include/dcmtk/config/osconfig.h"
 #include "dctk.h"          /* for various dcmdata headers */
 #include "cmdlnarg.h"      /* for prepareCmdLineArgs */
 #include "dcuid.h"         /* for dcmtk version name */
@@ -81,6 +81,11 @@
                                                                           DCM_TransferSyntaxUID, transferSyntax);
     NSLog(@"transferSyntaxOfCondition  %s", transferSyntaxOfCondition.text());
     NSLog(@"transferSyntax  %s", transferSyntax);
+    NSLog(@"-------#### %@", [self getSeriesUid]);
+    NSLog(@"-------%@", [self getSeriesNumber]);
+//    NSLog("123123")
+//    NSLog("-------%@", [self getSeriesUid])
+//    NSLog("-------$$$$$%@", [self getSeriesNumber])
 }
 /// 解析影像
 -(void)getDicImage:(SInt32)frame withCenter:(Float64)Wcenter withWidth:(Float64)Wwidth withImg:(nonnull ImgBlock)imgBlock{
@@ -311,6 +316,16 @@
 -(NSString *)getDicmFileModel{
     const char * model;
     self.dataSet->findAndGetString(DCM_Modality, model);
+    return  [NSString stringWithUTF8String:model];
+}
+-(NSString*)getSeriesNumber{
+    const char * model;
+    self.dataSet->findAndGetString(DCM_SeriesNumber, model);
+    return  [NSString stringWithUTF8String:model];
+}
+-(NSString*)getSeriesUid{
+    const char * model;
+    self.dataSet->findAndGetString(DCM_SeriesInstanceUID, model);
     return  [NSString stringWithUTF8String:model];
 }
 @end
